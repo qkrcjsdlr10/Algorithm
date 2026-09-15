@@ -24,6 +24,11 @@ bin/
 # Visual Studio Code
 .vscode/
 
+# Playwright authentication and browser state
+.playwright/
+auth.json
+storage-state.json
+
 # Python
 __pycache__/
 *.py[cod]
@@ -45,4 +50,3 @@ desktop.ini
 *.tmp
 *.swp
 *~
-
