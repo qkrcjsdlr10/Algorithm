@@ -9,6 +9,54 @@
 - SWEA
 - LeetCode
 
+
+<!-- STATS_START -->
+## Solved Problems
+
+### BOJ
+
+| Tier | Problems |
+|---|---:|
+| Bronze | 0 |
+| Silver | 0 |
+| Gold | 0 |
+| Platinum | 0 |
+| **Total** | **0** |
+
+### Programmers
+
+| Level | Problems |
+|---|---:|
+| Lv0 | 64 |
+| Lv1 | 86 |
+| Lv2 | 86 |
+| Lv3 | 37 |
+| Lv4 | 1 |
+| Lv5 | 0 |
+| **Total** | **274** |
+
+### SWEA
+
+| Difficulty | Problems |
+|---|---:|
+| D1 | 19 |
+| D2 | 14 |
+| D3 | 28 |
+| D4 | 10 |
+| D5 | 2 |
+| D6 | 1 |
+| **Total** | **74** |
+
+### LeetCode
+
+| Difficulty | Problems |
+|---|---:|
+| Easy | 0 |
+| Medium | 8 |
+| Hard | 0 |
+| **Total** | **8** |
+
+<!-- STATS_END -->
 ## Languages
 
 - Java

@@ -3136,6 +3136,22 @@
     "lastAction": "OK"
   },
   {
+    "id": "42842",
+    "title": "카펫",
+    "level": "Lv2",
+    "language": "Java",
+    "sourceLanguage": "java",
+    "file": "Lv2/42842_카펫_Java.java",
+    "submittedAt": "2026-09-15T17:00:07.359+09:00",
+    "accepted": true,
+    "score": 100.0,
+    "perfectScore": 100.0,
+    "submissionId": 51563001,
+    "url": "https://school.programmers.co.kr/learn/courses/30/lessons/42842",
+    "sha256": "6fa30229e13de16826fe17cd88291c700d626bdf9836ee172cff41e0cbebfd35",
+    "lastAction": "SKIP"
+  },
+  {
     "id": "42883",
     "title": "큰 수 만들기",
     "level": "Lv2",

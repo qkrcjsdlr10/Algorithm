@@ -200,6 +200,7 @@
 | H-Index | Lv2 | CPP | [Lv2/42747_H-Index_CPP.cpp](Lv2/42747_H-Index_CPP.cpp) |
 | 소수 찾기 | Lv2 | CPP | [Lv2/42839_소수_찾기_CPP.cpp](Lv2/42839_%EC%86%8C%EC%88%98_%EC%B0%BE%EA%B8%B0_CPP.cpp) |
 | 카펫 | Lv2 | CPP | [Lv2/42842_카펫_CPP.cpp](Lv2/42842_%EC%B9%B4%ED%8E%AB_CPP.cpp) |
+| 카펫 | Lv2 | Java | [Lv2/42842_카펫_Java.java](Lv2/42842_%EC%B9%B4%ED%8E%AB_Java.java) |
 | 큰 수 만들기 | Lv2 | CPP | [Lv2/42883_큰_수_만들기_CPP.cpp](Lv2/42883_%ED%81%B0_%EC%88%98_%EB%A7%8C%EB%93%A4%EA%B8%B0_CPP.cpp) |
 | 큰 수 만들기 | Lv2 | Java | [Lv2/42883_큰_수_만들기_Java.java](Lv2/42883_%ED%81%B0_%EC%88%98_%EB%A7%8C%EB%93%A4%EA%B8%B0_Java.java) |
 | 구명보트 | Lv2 | CPP | [Lv2/42885_구명보트_CPP.cpp](Lv2/42885_%EA%B5%AC%EB%AA%85%EB%B3%B4%ED%8A%B8_CPP.cpp) |

@@ -72,6 +72,23 @@ LANGUAGES: dict[str, tuple[str, str]] = {
     "lua": ("Lua", ".lua"),
 }
 
+EXTENSION_LANGUAGES: dict[str, str] = {
+    ".c": "C",
+    ".cpp": "CPP",
+    ".cs": "CSharp",
+    ".go": "Go",
+    ".java": "Java",
+    ".js": "JavaScript",
+    ".kt": "Kotlin",
+    ".py": "Python",
+    ".rb": "Ruby",
+    ".rs": "Rust",
+    ".scala": "Scala",
+    ".sql": "SQL",
+    ".swift": "Swift",
+    ".ts": "TypeScript",
+}
+
 
 class BackupError(RuntimeError):
     """Base error for the backup process."""
@@ -90,9 +107,27 @@ def parse_args() -> argparse.Namespace:
         description="Back up accepted submissions from the signed-in Programmers account."
     )
     mode = parser.add_mutually_exclusive_group(required=True)
-    mode.add_argument("--test", action="store_true", help="process at most 3 problems")
-    mode.add_argument("--all", action="store_true", help="process all solved problems")
-    mode.add_argument("--limit", type=int, metavar="N", help="process at most N problems")
+    mode.add_argument(
+        "--inspect",
+        action="store_true",
+        help="inspect the signed-in solved/problem UI without writing backups",
+    )
+    mode.add_argument(
+        "--test",
+        action="store_true",
+        help="save at most 3 locally missing solved problems",
+    )
+    mode.add_argument(
+        "--all",
+        action="store_true",
+        help="save all locally missing solved problems without overwriting files",
+    )
+    mode.add_argument(
+        "--limit",
+        type=int,
+        metavar="N",
+        help="save at most N locally missing solved problems",
+    )
     parser.add_argument(
         "--cdp-url",
         default="http://127.0.0.1:9222",
@@ -257,6 +292,61 @@ class BackupRunner:
         if self.page.locator("button", has_text="로그아웃").count() == 0:
             raise AuthenticationError("Log in to Programmers in the CDP browser first")
 
+    def inspect_flow(self) -> None:
+        """Report the actual signed-in DOM links and observed request paths."""
+        observed: list[tuple[int, str]] = []
+
+        def remember_response(response: Any) -> None:
+            if "programmers.co.kr" in response.url:
+                observed.append((response.status, response.url))
+
+        self.page.on("response", remember_response)
+        self.verify_login()
+        self.page.wait_for_timeout(1_500)
+        links = self.page.locator("a").evaluate_all(
+            """elements => elements.map(element => ({
+                text: (element.innerText || '').trim(),
+                href: element.href || '',
+            })).filter(item => item.href.includes('/learn/courses/30/lessons/'))"""
+        )
+        unique_links: list[dict[str, str]] = []
+        seen_urls: set[str] = set()
+        for link in links:
+            href = str(link.get("href") or "")
+            if href and href not in seen_urls:
+                seen_urls.add(href)
+                unique_links.append(link)
+
+        print(f"[INSPECT] solved URL: {self.page.url}")
+        print(f"[INSPECT] solved links visible in DOM: {len(unique_links)}")
+        for link in unique_links[:5]:
+            print(f"[INSPECT] solved link: {link}")
+        print("[INSPECT] observed solved-list routes:")
+        for status, url in dict.fromkeys(observed):
+            if "/api/" in url or "challenges" in url:
+                print(f"  {status} {url}")
+
+        if not unique_links:
+            raise BackupError("No solved problem link was found in the current DOM")
+
+        observed.clear()
+        self.navigate(unique_links[0]["href"])
+        self.page.wait_for_timeout(1_000)
+        controls = self.page.locator("a, button").evaluate_all(
+            """elements => elements.map(element => ({
+                tag: element.tagName,
+                text: (element.innerText || '').trim(),
+                href: element.href || '',
+            })).filter(item => /제출|채점|기록|내역/.test(item.text))"""
+        )
+        print(f"[INSPECT] problem URL from DOM: {self.page.url}")
+        print(f"[INSPECT] problem title: {self.page.title()}")
+        print(f"[INSPECT] submission-related controls: {controls[:20]}")
+        print("[INSPECT] observed problem routes:")
+        for status, url in dict.fromkeys(observed):
+            if "/api/" in url or "submission" in url or "lesson" in url:
+                print(f"  {status} {url}")
+
     def load_solved_problems(self, limit: int | None) -> list[dict[str, Any]]:
         problems: list[dict[str, Any]] = []
         seen: set[str] = set()
@@ -327,6 +417,55 @@ class BackupRunner:
             if isinstance(item, dict) and item.get("id") and item.get("language")
         }
 
+    def existing_solution_keys(
+        self, metadata: dict[str, dict[str, Any]]
+    ) -> set[str]:
+        keys = {
+            key
+            for key, item in metadata.items()
+            if item.get("file") and (self.output / str(item["file"])).is_file()
+        }
+        for path in self.output.rglob("*"):
+            if not path.is_file():
+                continue
+            match = re.match(r"^(\d+)_", path.name)
+            language = EXTENSION_LANGUAGES.get(path.suffix.casefold())
+            if match and language:
+                keys.add(f"{match.group(1)}|{language.casefold()}")
+        return keys
+
+    @staticmethod
+    def metadata_item(
+        problem: dict[str, Any],
+        language: str,
+        relative: str,
+        submission: dict[str, Any],
+        action: str,
+    ) -> dict[str, Any]:
+        problem_id = str(problem["id"])
+        level_value = problem.get("level")
+        level = (
+            f"Lv{level_value}"
+            if isinstance(level_value, int) and 0 <= level_value <= 5
+            else "Unclassified"
+        )
+        return {
+            "id": problem_id,
+            "title": str(problem.get("title") or "Untitled"),
+            "level": level,
+            "language": language,
+            "sourceLanguage": submission.get("language"),
+            "file": relative,
+            "submittedAt": submission.get("createdAt"),
+            "accepted": True,
+            "score": submission.get("score"),
+            "perfectScore": submission.get("perfectScore"),
+            "submissionId": submission.get("id"),
+            "url": PROBLEM_URL.format(problem_id=problem_id),
+            "sha256": code_digest(submission["code"]),
+            "lastAction": action,
+        }
+
     def save_solution(
         self,
         problem: dict[str, Any],
@@ -372,26 +511,13 @@ class BackupRunner:
                 )
                 path.write_bytes(code_bytes)
         else:
-            action = "OK"
+            action = "NEW"
             path.write_bytes(code_bytes)
-            self.log(f"[OK] {problem_id} {title} / {language}\n     -> {relative}")
+            self.log(f"[NEW] {problem_id} {title} / {language}\n      -> {relative}")
 
-        metadata[key] = {
-            "id": problem_id,
-            "title": title,
-            "level": level,
-            "language": language,
-            "sourceLanguage": submission.get("language"),
-            "file": relative,
-            "submittedAt": submission.get("createdAt"),
-            "accepted": True,
-            "score": submission.get("score"),
-            "perfectScore": submission.get("perfectScore"),
-            "submissionId": submission.get("id"),
-            "url": PROBLEM_URL.format(problem_id=problem_id),
-            "sha256": code_digest(code),
-            "lastAction": action,
-        }
+        metadata[key] = self.metadata_item(
+            problem, language, relative, submission, action
+        )
 
     def write_metadata(self, metadata: dict[str, dict[str, Any]]) -> None:
         entries = sorted(
@@ -425,6 +551,118 @@ class BackupRunner:
             lines.append(f"| {title} | {level} | {language} | [{relative}]({link}) |")
         lines.append("")
         (self.output / "README.md").write_bytes("\n".join(lines).encode("utf-8"))
+
+    def run_missing(self, problem_limit: int | None) -> None:
+        """Save only absent problem/language pairs; never update an existing file."""
+        self.verify_login()
+        self.log("[INFO] signed-in Programmers session confirmed")
+        problems = self.load_solved_problems(None)
+        metadata = self.load_metadata()
+        existing_keys = self.existing_solution_keys(metadata)
+        existing_problem_ids = {key.split("|", 1)[0] for key in existing_keys}
+        ordered = sorted(
+            enumerate(problems),
+            key=lambda item: (str(item[1].get("id")) in existing_problem_ids, item[0]),
+        )
+        selected_problems = 0
+        new_files = 0
+        metadata_changed = False
+
+        self.log(
+            f"[INFO] checking {len(problems)} solved problem(s) against "
+            f"{len(existing_keys)} local problem/language key(s)"
+        )
+        for _, problem in ordered:
+            if problem_limit is not None and selected_problems >= problem_limit:
+                break
+            problem_id = str(problem.get("id") or "")
+            title = str(problem.get("title") or "Untitled")
+            try:
+                self.wait()
+                self.navigate(PROBLEM_URL.format(problem_id=problem_id))
+                self.wait()
+                submissions = self.load_submissions(problem_id)
+                latest = self.latest_accepted_by_language(submissions)
+                missing: list[tuple[str, str, dict[str, Any]]] = []
+                recoverable: list[tuple[str, dict[str, Any], Path]] = []
+                for language, extension, submission in latest.values():
+                    key = f"{problem_id}|{language.casefold()}"
+                    if key not in existing_keys:
+                        missing.append((language, extension, submission))
+                        continue
+                    if key in metadata:
+                        continue
+                    level_value = problem.get("level")
+                    level = (
+                        f"Lv{level_value}"
+                        if isinstance(level_value, int) and 0 <= level_value <= 5
+                        else "Unclassified"
+                    )
+                    filename = build_filename(problem_id, title, language, extension)
+                    target = self.output / level / filename
+                    if target.is_file() and target.read_bytes() == submission["code"].encode(
+                        "utf-8"
+                    ):
+                        recoverable.append((language, submission, target))
+
+                if not missing and not recoverable:
+                    continue
+
+                selected_problems += 1
+                for language, submission, target in recoverable:
+                    key = f"{problem_id}|{language.casefold()}"
+                    relative = target.relative_to(self.output).as_posix()
+                    metadata[key] = self.metadata_item(
+                        problem, language, relative, submission, "SKIP"
+                    )
+                    metadata_changed = True
+                    self.log(
+                        f"[SKIP] existing identical file indexed: "
+                        f"{problem_id} {title} / {language}\n"
+                        f"       -> {relative}"
+                    )
+                for language, extension, submission in missing:
+                    key = f"{problem_id}|{language.casefold()}"
+                    level_value = problem.get("level")
+                    level = (
+                        f"Lv{level_value}"
+                        if isinstance(level_value, int) and 0 <= level_value <= 5
+                        else "Unclassified"
+                    )
+                    filename = build_filename(problem_id, title, language, extension)
+                    target = self.output / level / filename
+                    if target.exists():
+                        self.log(
+                            f"[SKIP] ambiguous existing target kept unchanged: "
+                            f"{target.relative_to(self.output).as_posix()}"
+                        )
+                        existing_keys.add(key)
+                        continue
+                    self.save_solution(
+                        problem, language, extension, submission, metadata
+                    )
+                    existing_keys.add(key)
+                    new_files += 1
+                    metadata_changed = True
+            except AccessLimitedError:
+                raise
+            except Exception as error:
+                message = f"{type(error).__name__}: {error}"
+                self.failures.append({"id": problem_id, "title": title, "error": message})
+                self.log(f"[ERROR] {problem_id} {title}: {message}")
+
+        if metadata_changed:
+            self.write_metadata(metadata)
+        self.log(
+            f"[SUMMARY] missing-only run: {selected_problems} problem(s), "
+            f"{new_files} new file(s)"
+        )
+        if self.failures:
+            self.log("[SUMMARY] failed problems:")
+            for failure in self.failures:
+                self.log(
+                    f"  - {failure['id']} {failure['title']}: {failure['error']}"
+                )
 
     def run(self, problem_limit: int | None) -> None:
         self.verify_login()
@@ -473,7 +711,10 @@ def main() -> int:
     try:
         with sync_playwright() as playwright:
             runner = BackupRunner(args, playwright)
-            runner.run(limit)
+            if args.inspect:
+                runner.inspect_flow()
+            else:
+                runner.run_missing(limit)
         return 0
     except AccessLimitedError as error:
         print(f"[STOP] access restriction detected; no bypass attempted: {error}", file=sys.stderr)

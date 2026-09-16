@@ -26,6 +26,7 @@ bin/
 
 # Playwright authentication and browser state
 .playwright/
+.edge-leetcode-profile/
 auth.json
 storage-state.json
 
