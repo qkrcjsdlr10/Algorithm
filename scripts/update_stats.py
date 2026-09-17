@@ -122,15 +122,12 @@ def render_table(site: str, label: str, tiers: tuple[str, ...], stats: SiteStats
         "|---|---:|",
     ]
     lines.extend(f"| {tier} | {len(stats.by_tier[tier])} |" for tier in tiers)
-    lines.append(f"| **Total** | **{len(stats.problem_ids)}** |")
     if stats.extra_problem_ids:
-        folders = ", ".join(EXTRA_TOTAL_FOLDERS.get(site, ()))
-        lines.extend(
-            (
-                "",
-                f"_Total includes {len(stats.extra_problem_ids)} unique problems in {folders}._",
-            )
+        folders = " / ".join(EXTRA_TOTAL_FOLDERS.get(site, ()))
+        lines.append(
+            f"| Other ({folders}) | {len(stats.extra_problem_ids)} |"
         )
+    lines.append(f"| **Total** | **{len(stats.problem_ids)}** |")
     return "\n".join(lines)
 
 

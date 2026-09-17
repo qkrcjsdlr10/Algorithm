@@ -45,9 +45,8 @@
 | D4 | 10 |
 | D5 | 2 |
 | D6 | 1 |
+| Other (Mock / Unclassified) | 5 |
 | **Total** | **79** |
-
-_Total includes 5 unique problems in Mock, Unclassified._
 
 ### LeetCode
 
