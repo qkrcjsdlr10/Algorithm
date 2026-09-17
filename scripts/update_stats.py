@@ -49,17 +49,23 @@ SITE_TIERS: dict[str, tuple[str, tuple[str, ...]]] = {
     "LeetCode": ("Difficulty", ("Easy", "Medium", "Hard")),
 }
 
+EXTRA_TOTAL_FOLDERS: dict[str, tuple[str, ...]] = {
+    "SWEA": ("Mock", "Unclassified"),
+}
+
 
 @dataclass
 class SiteStats:
     by_tier: dict[str, set[str]]
+    extra_problem_ids: set[str]
     source_files: int
     duplicate_files: int
     unidentified: list[Path]
 
     @property
     def problem_ids(self) -> set[str]:
-        return set().union(*self.by_tier.values()) if self.by_tier else set()
+        tier_ids = set().union(*self.by_tier.values()) if self.by_tier else set()
+        return tier_ids | self.extra_problem_ids
 
 
 def is_incomplete(path: Path, tier_root: Path) -> bool:
@@ -72,11 +78,14 @@ def is_incomplete(path: Path, tier_root: Path) -> bool:
 def collect_site(site: str, tiers: tuple[str, ...]) -> SiteStats:
     site_root = REPOSITORY_ROOT / site
     by_tier = {tier: set() for tier in tiers}
+    extra_problem_ids: set[str] = set()
     identified_files = 0
     unidentified: list[Path] = []
 
-    for tier in tiers:
-        tier_root = site_root / tier
+    folders = [(tier, False) for tier in tiers]
+    folders.extend((folder, True) for folder in EXTRA_TOTAL_FOLDERS.get(site, ()))
+    for folder, is_extra in folders:
+        tier_root = site_root / folder
         if not tier_root.is_dir():
             continue
         for path in sorted(tier_root.rglob("*")):
@@ -89,11 +98,16 @@ def collect_site(site: str, tiers: tuple[str, ...]) -> SiteStats:
                 unidentified.append(path.relative_to(REPOSITORY_ROOT))
                 continue
             identified_files += 1
-            by_tier[tier].add(match.group(1))
+            if is_extra:
+                extra_problem_ids.add(match.group(1))
+            else:
+                by_tier[folder].add(match.group(1))
 
-    unique_ids = set().union(*by_tier.values()) if by_tier else set()
+    tier_ids = set().union(*by_tier.values()) if by_tier else set()
+    unique_ids = tier_ids | extra_problem_ids
     return SiteStats(
         by_tier=by_tier,
+        extra_problem_ids=extra_problem_ids,
         source_files=identified_files,
         duplicate_files=identified_files - len(unique_ids),
         unidentified=unidentified,
@@ -109,6 +123,14 @@ def render_table(site: str, label: str, tiers: tuple[str, ...], stats: SiteStats
     ]
     lines.extend(f"| {tier} | {len(stats.by_tier[tier])} |" for tier in tiers)
     lines.append(f"| **Total** | **{len(stats.problem_ids)}** |")
+    if stats.extra_problem_ids:
+        folders = ", ".join(EXTRA_TOTAL_FOLDERS.get(site, ()))
+        lines.extend(
+            (
+                "",
+                f"_Total includes {len(stats.extra_problem_ids)} unique problems in {folders}._",
+            )
+        )
     return "\n".join(lines)
 
 

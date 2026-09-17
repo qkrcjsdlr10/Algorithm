@@ -220,37 +220,65 @@ class BackupRunner:
             )
         return result
 
+    def advance_listing_page(self, page_index: int) -> bool:
+        next_index = page_index + 1
+        link = self.page.locator(
+            ".pagination a.page-link",
+            has_text=re.compile(rf"^\s*{next_index}\s*$"),
+        )
+        if link.count() == 0:
+            link = self.page.locator(
+                ".pagination a.page-link",
+                has_text=re.compile(r"^\s*Next\s*$", re.IGNORECASE),
+            )
+        if link.count() == 0:
+            return False
+        link = link.first
+        parent_class = str(
+            link.evaluate("element => element.closest('li')?.className || ''")
+        ).casefold()
+        if "disabled" in parent_class:
+            return False
+        self.wait()
+        with self.page.expect_navigation(wait_until="domcontentloaded", timeout=30_000):
+            link.click()
+        self.page.wait_for_timeout(500)
+        return True
+
+    def go_to_listing_page(self, target_page: int) -> None:
+        current_page = 1
+        while current_page < target_page:
+            if not self.advance_listing_page(current_page):
+                raise BackupError(f"listing page unavailable: {target_page}")
+            current_page += 1
+
     def collect_cards(self, missing_ids_only: bool, limit: int | None) -> list[dict[str, str]]:
         metadata = self.load_metadata()
         existing_ids = {key.split("|", 1)[0] for key in self.existing_files(metadata)}
         self.verify_login()
         selected: list[dict[str, str]] = []
+        seen_pages: set[tuple[str, ...]] = set()
         page_index = 1
         while True:
-            for card in self.extract_cards(page_index):
+            cards = self.extract_cards(page_index)
+            page_signature = tuple(card["contestProbId"] for card in cards)
+            if not page_signature or page_signature in seen_pages:
+                return selected
+            seen_pages.add(page_signature)
+            for card in cards:
                 if missing_ids_only and card["id"] in existing_ids:
                     continue
                 selected.append(card)
                 if limit is not None and len(selected) >= limit:
                     return selected
-            next_index = page_index + 1
-            link = self.page.locator(".pagination a.page-link", has_text=str(next_index))
-            if link.count() == 0:
+            if not self.advance_listing_page(page_index):
                 return selected
-            self.wait()
-            with self.page.expect_navigation(wait_until="domcontentloaded", timeout=30_000):
-                link.first.click()
-            self.page.wait_for_timeout(500)
-            page_index = next_index
+            page_index += 1
 
     def open_card_history(self, card: dict[str, str]) -> None:
         self.navigate(START_URL)
         page_index = int(card["pageIndex"])
-        if page_index > 1:
-            link = self.page.locator(".pagination a.page-link", has_text=str(page_index))
-            with self.page.expect_navigation(wait_until="domcontentloaded", timeout=30_000):
-                link.first.click()
-            self.page.wait_for_timeout(500)
+        self.go_to_listing_page(page_index)
         problem_link = self.page.locator(
             f"a[onclick*='{card['contestProbId']}']"
         ).first
@@ -485,9 +513,15 @@ class BackupRunner:
         self.verify_login()
         cards = self.extract_cards(1)
         pages = self.page.locator(".pagination .page-item").all_inner_texts()
+        all_cards = self.collect_cards(False, None)
+        unique_ids = {card["id"] for card in all_cards}
         print(f"[INSPECT] logged in as {USER_NAME}")
         print(f"[INSPECT] first-page problems: {len(cards)}")
         print(f"[INSPECT] pagination: {pages}")
+        print(
+            f"[INSPECT] all cards: {len(all_cards)}; "
+            f"unique problem IDs: {len(unique_ids)}; duplicate cards: {len(all_cards) - len(unique_ids)}"
+        )
         for card in cards[:3]:
             print(f"[INSPECT] {card}")
 
