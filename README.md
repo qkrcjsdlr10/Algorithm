@@ -17,11 +17,11 @@
 
 | Tier | Problems |
 |---|---:|
-| Bronze | 0 |
-| Silver | 0 |
-| Gold | 0 |
+| Bronze | 14 |
+| Silver | 66 |
+| Gold | 7 |
 | Platinum | 0 |
-| **Total** | **0** |
+| **Total** | **87** |
 
 ### Programmers
 
@@ -42,11 +42,11 @@
 | D1 | 19 |
 | D2 | 14 |
 | D3 | 28 |
-| D4 | 10 |
-| D5 | 2 |
+| D4 | 12 |
+| D5 | 3 |
 | D6 | 1 |
-| Other (Mock / Unclassified) | 5 |
-| **Total** | **79** |
+| Other (Mock / Unclassified) | 7 |
+| **Total** | **84** |
 
 ### LeetCode
 
