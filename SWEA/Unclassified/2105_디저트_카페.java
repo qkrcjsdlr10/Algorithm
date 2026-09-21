@@ -1,5 +1,3 @@
-package ws;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class swea2105_디저트_카페 {
+public class Solution {
 
     static int[] dx = {1, -1, -1, 1};
     static int[] dy = {1, 1, -1, -1};

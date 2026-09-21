@@ -230,7 +230,7 @@
 | 피로도 | Lv2 | Java | [Lv2/87946_피로도_Java.java](Lv2/87946_%ED%94%BC%EB%A1%9C%EB%8F%84_Java.java) |
 | k진수에서 소수 개수 구하기 | Lv2 | CPP | [Lv2/92335_k진수에서_소수_개수_구하기_CPP.cpp](Lv2/92335_k%EC%A7%84%EC%88%98%EC%97%90%EC%84%9C_%EC%86%8C%EC%88%98_%EA%B0%9C%EC%88%98_%EA%B5%AC%ED%95%98%EA%B8%B0_CPP.cpp) |
 | 주차 요금 계산 | Lv2 | CPP | [Lv2/92341_주차_요금_계산_CPP.cpp](Lv2/92341_%EC%A3%BC%EC%B0%A8_%EC%9A%94%EA%B8%88_%EA%B3%84%EC%82%B0_CPP.cpp) |
-| 양궁대회 | Lv2 | Java | [Lv2/92342_양궁대회_Java.java](Lv2/92342_%EC%96%91%EA%B6%81%EB%8C%80%ED%9A%8C_Java.java) |
+| 양궁대회 | Lv2 | Java | [Lv2/92342_양궁대회.java](Lv2/92342_%EC%96%91%EA%B6%81%EB%8C%80%ED%9A%8C.java) |
 | 두 큐 합 같게 만들기 | Lv2 | CPP | [Lv2/118667_두_큐_합_같게_만들기_CPP.cpp](Lv2/118667_%EB%91%90_%ED%81%90_%ED%95%A9_%EA%B0%99%EA%B2%8C_%EB%A7%8C%EB%93%A4%EA%B8%B0_CPP.cpp) |
 | 두 큐 합 같게 만들기 | Lv2 | Java | [Lv2/118667_두_큐_합_같게_만들기_Java.java](Lv2/118667_%EB%91%90_%ED%81%90_%ED%95%A9_%EA%B0%99%EA%B2%8C_%EB%A7%8C%EB%93%A4%EA%B8%B0_Java.java) |
 | 할인 행사 | Lv2 | CPP | [Lv2/131127_할인_행사_CPP.cpp](Lv2/131127_%ED%95%A0%EC%9D%B8_%ED%96%89%EC%82%AC_CPP.cpp) |
@@ -252,9 +252,9 @@
 | 미로 탈출 | Lv2 | Java | [Lv2/159993_미로_탈출_Java.java](Lv2/159993_%EB%AF%B8%EB%A1%9C_%ED%83%88%EC%B6%9C_Java.java) |
 | 리코쳇 로봇 | Lv2 | CPP | [Lv2/169199_리코쳇_로봇_CPP.cpp](Lv2/169199_%EB%A6%AC%EC%BD%94%EC%B3%87_%EB%A1%9C%EB%B4%87_CPP.cpp) |
 | 연속된 부분 수열의 합 | Lv2 | CPP | [Lv2/178870_연속된_부분_수열의_합_CPP.cpp](Lv2/178870_%EC%97%B0%EC%86%8D%EB%90%9C_%EB%B6%80%EB%B6%84_%EC%88%98%EC%97%B4%EC%9D%98_%ED%95%A9_CPP.cpp) |
-| 비밀 코드 해독 | Lv2 | Java | [Lv2/388352_비밀_코드_해독_Java.java](Lv2/388352_%EB%B9%84%EB%B0%80_%EC%BD%94%EB%93%9C_%ED%95%B4%EB%8F%85_Java.java) |
+| 비밀 코드 해독 | Lv2 | Java | [Lv2/388352_비밀_코드_해독.java](Lv2/388352_%EB%B9%84%EB%B0%80_%EC%BD%94%EB%93%9C_%ED%95%B4%EB%8F%85.java) |
 | 서버 증설 횟수 | Lv2 | CPP | [Lv2/389479_서버_증설_횟수_CPP.cpp](Lv2/389479_%EC%84%9C%EB%B2%84_%EC%A6%9D%EC%84%A4_%ED%9A%9F%EC%88%98_CPP.cpp) |
-| 바이러스 파이프 | Lv2 | Java | [Lv2/468373_바이러스_파이프_Java.java](Lv2/468373_%EB%B0%94%EC%9D%B4%EB%9F%AC%EC%8A%A4_%ED%8C%8C%EC%9D%B4%ED%94%84_Java.java) |
+| 바이러스 파이프 | Lv2 | Java | [Lv2/468373_바이러스_파이프.java](Lv2/468373_%EB%B0%94%EC%9D%B4%EB%9F%AC%EC%8A%A4_%ED%8C%8C%EC%9D%B4%ED%94%84.java) |
 | 가장 긴 팰린드롬 | Lv3 | CPP | [Lv3/12904_가장_긴_팰린드롬_CPP.cpp](Lv3/12904_%EA%B0%80%EC%9E%A5_%EA%B8%B4_%ED%8C%B0%EB%A6%B0%EB%93%9C%EB%A1%AC_CPP.cpp) |
 | 거스름돈 | Lv3 | CPP | [Lv3/12907_거스름돈_CPP.cpp](Lv3/12907_%EA%B1%B0%EC%8A%A4%EB%A6%84%EB%8F%88_CPP.cpp) |
 | 야근 지수 | Lv3 | CPP | [Lv3/12927_야근_지수_CPP.cpp](Lv3/12927_%EC%95%BC%EA%B7%BC_%EC%A7%80%EC%88%98_CPP.cpp) |
@@ -271,7 +271,7 @@
 | 섬 연결하기 | Lv3 | Java | [Lv3/42861_섬_연결하기_Java.java](Lv3/42861_%EC%84%AC_%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0_Java.java) |
 | 단속카메라 | Lv3 | CPP | [Lv3/42884_단속카메라_CPP.cpp](Lv3/42884_%EB%8B%A8%EC%86%8D%EC%B9%B4%EB%A9%94%EB%9D%BC_CPP.cpp) |
 | 단속카메라 | Lv3 | Java | [Lv3/42884_단속카메라_Java.java](Lv3/42884_%EB%8B%A8%EC%86%8D%EC%B9%B4%EB%A9%94%EB%9D%BC_Java.java) |
-| 길 찾기 게임 | Lv3 | Java | [Lv3/42892_길_찾기_게임_Java.java](Lv3/42892_%EA%B8%B8_%EC%B0%BE%EA%B8%B0_%EA%B2%8C%EC%9E%84_Java.java) |
+| 길 찾기 게임 | Lv3 | Java | [Lv3/42892_길_찾기_게임.java](Lv3/42892_%EA%B8%B8_%EC%B0%BE%EA%B8%B0_%EA%B2%8C%EC%9E%84.java) |
 | 등굣길 | Lv3 | CPP | [Lv3/42898_등굣길_CPP.cpp](Lv3/42898_%EB%93%B1%EA%B5%A3%EA%B8%B8_CPP.cpp) |
 | 정수 삼각형 | Lv3 | CPP | [Lv3/43105_정수_삼각형_CPP.cpp](Lv3/43105_%EC%A0%95%EC%88%98_%EC%82%BC%EA%B0%81%ED%98%95_CPP.cpp) |
 | 정수 삼각형 | Lv3 | Java | [Lv3/43105_정수_삼각형_Java.java](Lv3/43105_%EC%A0%95%EC%88%98_%EC%82%BC%EA%B0%81%ED%98%95_Java.java) |
@@ -293,11 +293,11 @@
 | 풍선 터트리기 | Lv3 | CPP | [Lv3/68646_풍선_터트리기_CPP.cpp](Lv3/68646_%ED%92%8D%EC%84%A0_%ED%84%B0%ED%8A%B8%EB%A6%AC%EA%B8%B0_CPP.cpp) |
 | 합승 택시 요금 | Lv3 | CPP | [Lv3/72413_합승_택시_요금_CPP.cpp](Lv3/72413_%ED%95%A9%EC%8A%B9_%ED%83%9D%EC%8B%9C_%EC%9A%94%EA%B8%88_CPP.cpp) |
 | 합승 택시 요금 | Lv3 | Java | [Lv3/72413_합승_택시_요금_Java.java](Lv3/72413_%ED%95%A9%EC%8A%B9_%ED%83%9D%EC%8B%9C_%EC%9A%94%EA%B8%88_Java.java) |
-| 광고 삽입 | Lv3 | Java | [Lv3/72414_광고_삽입_Java.java](Lv3/72414_%EA%B4%91%EA%B3%A0_%EC%82%BD%EC%9E%85_Java.java) |
+| 광고 삽입 | Lv3 | Java | [Lv3/72414_광고_삽입.java](Lv3/72414_%EA%B4%91%EA%B3%A0_%EC%82%BD%EC%9E%85.java) |
 | 다단계 칫솔 판매 | Lv3 | CPP | [Lv3/77486_다단계_칫솔_판매_CPP.cpp](Lv3/77486_%EB%8B%A4%EB%8B%A8%EA%B3%84_%EC%B9%AB%EC%86%94_%ED%8C%90%EB%A7%A4_CPP.cpp) |
 | 다단계 칫솔 판매 | Lv3 | Java | [Lv3/77486_다단계_칫솔_판매_Java.java](Lv3/77486_%EB%8B%A4%EB%8B%A8%EA%B3%84_%EC%B9%AB%EC%86%94_%ED%8C%90%EB%A7%A4_Java.java) |
-| 아이템 줍기 | Lv3 | Java | [Lv3/87694_아이템_줍기_Java.java](Lv3/87694_%EC%95%84%EC%9D%B4%ED%85%9C_%EC%A4%8D%EA%B8%B0_Java.java) |
-| 양과 늑대 | Lv3 | Java | [Lv3/92343_양과_늑대_Java.java](Lv3/92343_%EC%96%91%EA%B3%BC_%EB%8A%91%EB%8C%80_Java.java) |
+| 아이템 줍기 | Lv3 | Java | [Lv3/87694_아이템_줍기.java](Lv3/87694_%EC%95%84%EC%9D%B4%ED%85%9C_%EC%A4%8D%EA%B8%B0.java) |
+| 양과 늑대 | Lv3 | Java | [Lv3/92343_양과_늑대.java](Lv3/92343_%EC%96%91%EA%B3%BC_%EB%8A%91%EB%8C%80.java) |
 | 파괴되지 않은 건물 | Lv3 | CPP | [Lv3/92344_파괴되지_않은_건물_CPP.cpp](Lv3/92344_%ED%8C%8C%EA%B4%B4%EB%90%98%EC%A7%80_%EC%95%8A%EC%9D%80_%EA%B1%B4%EB%AC%BC_CPP.cpp) |
 | 부대복귀 | Lv3 | CPP | [Lv3/132266_부대복귀_CPP.cpp](Lv3/132266_%EB%B6%80%EB%8C%80%EB%B3%B5%EA%B7%80_CPP.cpp) |
 | 인사고과 | Lv3 | CPP | [Lv3/152995_인사고과_CPP.cpp](Lv3/152995_%EC%9D%B8%EC%82%AC%EA%B3%A0%EA%B3%BC_CPP.cpp) |
