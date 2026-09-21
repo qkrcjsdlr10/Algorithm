@@ -41,12 +41,12 @@
 |---|---:|
 | D1 | 19 |
 | D2 | 14 |
-| D3 | 28 |
+| D3 | 29 |
 | D4 | 12 |
 | D5 | 3 |
 | D6 | 1 |
-| Other (Mock / Unclassified) | 7 |
-| **Total** | **84** |
+| Other (Mock / Unclassified) | 8 |
+| **Total** | **86** |
 
 ### LeetCode
 
