@@ -45,17 +45,17 @@
 | D4 | 12 |
 | D5 | 3 |
 | D6 | 1 |
-| Other (Mock / Unclassified) | 8 |
-| **Total** | **86** |
+| Other (Mock / Unclassified) | 9 |
+| **Total** | **87** |
 
 ### LeetCode
 
 | Difficulty | Problems |
 |---|---:|
 | Easy | 0 |
-| Medium | 8 |
+| Medium | 9 |
 | Hard | 0 |
-| **Total** | **8** |
+| **Total** | **9** |
 
 <!-- STATS_END -->
 ## Languages
