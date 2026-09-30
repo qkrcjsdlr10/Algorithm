@@ -3,7 +3,10 @@
 
 from __future__ import annotations
 
+import argparse
+import os
 import re
+import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -75,7 +78,23 @@ def is_incomplete(path: Path, tier_root: Path) -> bool:
     )
 
 
-def collect_site(site: str, tiers: tuple[str, ...]) -> SiteStats:
+def staged_paths() -> list[Path]:
+    result = subprocess.run(
+        ["git", "ls-files", "--cached", "-z"],
+        cwd=REPOSITORY_ROOT,
+        stdout=subprocess.PIPE,
+        check=True,
+    )
+    return [
+        REPOSITORY_ROOT / os.fsdecode(name)
+        for name in result.stdout.split(b"\0")
+        if name
+    ]
+
+
+def collect_site(
+    site: str, tiers: tuple[str, ...], indexed_paths: list[Path] | None = None
+) -> SiteStats:
     site_root = REPOSITORY_ROOT / site
     by_tier = {tier: set() for tier in tiers}
     extra_problem_ids: set[str] = set()
@@ -86,10 +105,17 @@ def collect_site(site: str, tiers: tuple[str, ...]) -> SiteStats:
     folders.extend((folder, True) for folder in EXTRA_TOTAL_FOLDERS.get(site, ()))
     for folder, is_extra in folders:
         tier_root = site_root / folder
-        if not tier_root.is_dir():
+        if indexed_paths is None and not tier_root.is_dir():
             continue
-        for path in sorted(tier_root.rglob("*")):
-            if not path.is_file() or path.suffix.casefold() not in SOURCE_EXTENSIONS:
+        paths = (
+            tier_root.rglob("*")
+            if indexed_paths is None
+            else (path for path in indexed_paths if path.is_relative_to(tier_root))
+        )
+        for path in sorted(paths):
+            if indexed_paths is None and not path.is_file():
+                continue
+            if path.suffix.casefold() not in SOURCE_EXTENSIONS:
                 continue
             if is_incomplete(path, tier_root):
                 continue
@@ -173,8 +199,14 @@ def print_verification(all_stats: dict[str, SiteStats]) -> None:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--staged", action="store_true", help="count files in the Git index"
+    )
+    args = parser.parse_args()
+    indexed_paths = staged_paths() if args.staged else None
     all_stats = {
-        site: collect_site(site, tiers)
+        site: collect_site(site, tiers, indexed_paths)
         for site, (_, tiers) in SITE_TIERS.items()
     }
     update_readme(render_stats(all_stats))

@@ -1,0 +1,20 @@
+#!/bin/sh
+set -eu
+
+cd "$(git rev-parse --show-toplevel)"
+
+if ! git diff --quiet -- README.md; then
+    echo "Stage or discard unstaged README.md changes before committing." >&2
+    exit 1
+fi
+
+if command -v python >/dev/null 2>&1; then
+    python scripts/update_stats.py --staged
+elif command -v python3 >/dev/null 2>&1; then
+    python3 scripts/update_stats.py --staged
+else
+    echo "Python is required to update README problem counts." >&2
+    exit 1
+fi
+
+git add -- README.md

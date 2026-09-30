@@ -58,6 +58,13 @@
 | **Total** | **10** |
 
 <!-- STATS_END -->
+
+## 문제 수 자동 갱신
+
+처음 클론한 저장소에서는 `git config core.hooksPath .githooks`를 한 번 실행합니다.
+이후 커밋할 때 Git에 추가한 풀이 파일을 기준으로 위 표를 다시 계산하고 README를 같은 커밋에 포함합니다.
+`main`에 푸시하면 GitHub Actions도 다시 계산하여 누락된 갱신을 보완합니다.
+
 ## Languages
 
 - Java
