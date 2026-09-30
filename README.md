@@ -53,9 +53,9 @@
 | Difficulty | Problems |
 |---|---:|
 | Easy | 0 |
-| Medium | 9 |
+| Medium | 10 |
 | Hard | 0 |
-| **Total** | **9** |
+| **Total** | **10** |
 
 <!-- STATS_END -->
 ## Languages
