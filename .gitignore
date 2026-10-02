@@ -51,3 +51,6 @@ desktop.ini
 *.tmp
 *.swp
 *~
+
+# Local learning material downloads
+/downloads/
