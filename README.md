@@ -43,10 +43,10 @@
 | D2 | 14 |
 | D3 | 29 |
 | D4 | 13 |
-| D5 | 3 |
+| D5 | 4 |
 | D6 | 1 |
 | Other (Mock / Unclassified) | 10 |
-| **Total** | **89** |
+| **Total** | **90** |
 
 ### LeetCode
 
