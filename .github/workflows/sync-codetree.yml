@@ -1,0 +1,47 @@
+name: Sync CodeTree solutions
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-codetree-solutions
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Algorithm
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Check out CodeTree
+        uses: actions/checkout@v4
+        with:
+          repository: qkrcjsdlr10/CodeTree
+          path: _codetree_source
+
+      - name: Sync solutions into Algorithm/CodeTree
+        run: |
+          mkdir -p CodeTree
+          rsync -a --delete --exclude='.git/' _codetree_source/ CodeTree/
+
+      - name: Commit synced solutions
+        run: |
+          git add CodeTree
+          if git diff --cached --quiet; then
+            echo "CodeTree solutions are already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "sync: update CodeTree solutions"
+          git push
