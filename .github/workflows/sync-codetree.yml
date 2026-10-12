@@ -31,7 +31,7 @@ jobs:
       - name: Sync solutions into Algorithm/CodeTree
         run: |
           mkdir -p CodeTree
-          rsync -a --delete --exclude='.git/' _codetree_source/ CodeTree/
+          rsync -a --exclude='.git/' _codetree_source/ CodeTree/
 
       - name: Commit synced solutions
         run: |
