@@ -30,10 +30,10 @@
 | Lv0 | 64 |
 | Lv1 | 86 |
 | Lv2 | 86 |
-| Lv3 | 37 |
+| Lv3 | 38 |
 | Lv4 | 1 |
 | Lv5 | 0 |
-| **Total** | **274** |
+| **Total** | **275** |
 
 ### SWEA
 
@@ -53,9 +53,9 @@
 | Difficulty | Problems |
 |---|---:|
 | Easy | 0 |
-| Medium | 10 |
+| Medium | 12 |
 | Hard | 0 |
-| **Total** | **10** |
+| **Total** | **12** |
 
 <!-- STATS_END -->
 
