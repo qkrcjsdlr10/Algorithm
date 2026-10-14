@@ -45,7 +45,7 @@
 | D4 | 13 |
 | D5 | 4 |
 | D6 | 1 |
-| Other (Mock / Unclassified) | 12 |
+| Other (Unclassified) | 12 |
 | **Total** | **92** |
 
 ### LeetCode
@@ -92,7 +92,7 @@ Algorithm/
 │  ├─ D4/
 │  ├─ D5/
 │  ├─ D6/
-│  └─ Mock/
+│  └─ Unclassified/
 └─ LeetCode/
    ├─ Easy/
    ├─ Medium/

@@ -53,7 +53,7 @@ SITE_TIERS: dict[str, tuple[str, tuple[str, ...]]] = {
 }
 
 EXTRA_TOTAL_FOLDERS: dict[str, tuple[str, ...]] = {
-    "SWEA": ("Mock", "Unclassified"),
+    "SWEA": ("Unclassified",),
 }
 
 
