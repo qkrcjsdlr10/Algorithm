@@ -53,9 +53,9 @@
 | Difficulty | Problems |
 |---|---:|
 | Easy | 0 |
-| Medium | 12 |
+| Medium | 13 |
 | Hard | 0 |
-| **Total** | **12** |
+| **Total** | **13** |
 
 <!-- STATS_END -->
 
