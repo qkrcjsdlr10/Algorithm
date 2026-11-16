@@ -42,11 +42,11 @@
 | D1 | 19 |
 | D2 | 14 |
 | D3 | 30 |
-| D4 | 16 |
+| D4 | 17 |
 | D5 | 4 |
 | D6 | 1 |
 | Other (Unclassified) | 14 |
-| **Total** | **98** |
+| **Total** | **99** |
 
 ### LeetCode
 
