@@ -8,6 +8,7 @@
 - Programmers
 - SWEA
 - LeetCode
+- CodeTree
 
 
 <!-- STATS_START -->
@@ -56,6 +57,14 @@
 | Medium | 13 |
 | Hard | 0 |
 | **Total** | **13** |
+
+### CodeTree
+
+| Trail | Problems |
+|---|---:|
+| trail4 | 6 |
+| trail6 | 2 |
+| **Total** | **7** |
 
 ### Programmers SQL
 
@@ -116,29 +125,33 @@ Algorithm/
 │  ├─ D5/
 │  ├─ D6/
 │  └─ Unclassified/
-└─ LeetCode/
-   ├─ Easy/
-   ├─ Medium/
-   ├─ Hard/
-   └─ SQL/
-      ├─ Easy/
-      ├─ Medium/
-      └─ Hard/
+├─ LeetCode/
+│  ├─ Easy/
+│  ├─ Medium/
+│  ├─ Hard/
+│  └─ SQL/
+│     ├─ Easy/
+│     ├─ Medium/
+│     └─ Hard/
+└─ CodeTree/            # qkrcjsdlr10/CodeTree 저장소에서 자동 동기화
+   ├─ trail4/<문제명>/<slug>.java
+   └─ trail6/<문제명>/<slug>.java
 ```
 
 Git은 빈 폴더를 추적하지 않으므로, 난이도 폴더는 첫 문제 풀이를 추가할 때 저장소에 반영됩니다.
+CodeTree는 파일명에 문제 번호가 없으므로 풀이 파일명(slug)으로 문제를 구분하고, 여러 trail에 있는 같은 문제는 합계에서 한 번만 셉니다.
 SQL 폴더는 미리 `.gitkeep`으로 만들어 두었으며, SQL 풀이는 알고리즘 문제 수와 별도의 표로 집계합니다.
 
 ## File Naming
 
 가능하면 문제 번호와 문제 이름을 함께 사용합니다. 파일명에 사용할 수 없는 특수문자는 제거하거나 언더스코어(`_`)로 바꿉니다.
-문제별 풀이 로직이 아직 없는 파일은 이름 끝에 `_미완성`을 붙여 완성 풀이와 구분합니다.
+파일명 끝에는 언어(`_Java`, `_CPP`, `_C`)를 붙이고, 풀이 로직이 아직 없는 파일은 언어 앞에 `_미완성`을 붙여 완성 풀이와 구분합니다.
 
 ```text
-BOJ/Gold/1753_최단경로.java
-Programmers/Lv2/전력망을_둘로_나누기.java
-SWEA/D4/5644_무선충전.java
-LeetCode/Medium/3_Longest_Substring_Without_Repeating_Characters.java
+BOJ/Gold/1753_최단경로_CPP.cpp
+Programmers/Lv2/86971_전력망을_둘로_나누기_Java.java
+SWEA/D4/5644_무선충전_Java.java
+LeetCode/Medium/3_Longest_Substring_Without_Repeating_Characters_Java.java
 Programmers/SQL/Lv1/59034_모든_레코드_조회하기.sql
 LeetCode/SQL/Easy/175_Combine_Two_Tables.sql
 ```

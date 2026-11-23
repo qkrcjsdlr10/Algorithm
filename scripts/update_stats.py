@@ -166,9 +166,59 @@ def render_table(site: str, label: str, tiers: tuple[str, ...], stats: SiteStats
     return "\n".join(lines)
 
 
-def render_stats(all_stats: dict[str, SiteStats]) -> str:
+CODETREE = "CodeTree"
+CODETREE_AFTER = "LeetCode"
+CODETREE_TRAIL = re.compile(r"^trail(\d+)$", re.IGNORECASE)
+
+
+def collect_codetree(
+    indexed_paths: list[Path] | None = None,
+) -> tuple[tuple[str, ...], SiteStats]:
+    """Count CodeTree solutions laid out as CodeTree/trailN/<problem>/<slug>.<ext>.
+
+    CodeTree file names carry no problem number, so the solution file's slug
+    (e.g. ``height-of-friends``) identifies the problem. A problem that appears
+    in several trails is counted in each trail row but only once in the total.
+    """
+    site_root = REPOSITORY_ROOT / CODETREE
+    if indexed_paths is None:
+        paths = site_root.rglob("*") if site_root.is_dir() else iter(())
+    else:
+        paths = (path for path in indexed_paths if path.is_relative_to(site_root))
+    by_tier: dict[str, set[str]] = {}
+    identified_files = 0
+    unidentified: list[Path] = []
+    for path in sorted(paths):
+        if indexed_paths is None and not path.is_file():
+            continue
+        if path.suffix.casefold() not in SOURCE_EXTENSIONS:
+            continue
+        parts = path.relative_to(site_root).parts
+        if len(parts) != 3 or not CODETREE_TRAIL.match(parts[0]):
+            unidentified.append(path.relative_to(REPOSITORY_ROOT))
+            continue
+        if is_incomplete(path, site_root / parts[0]):
+            continue
+        identified_files += 1
+        by_tier.setdefault(parts[0], set()).add(path.stem.casefold())
+    tiers = tuple(sorted(by_tier, key=lambda t: int(CODETREE_TRAIL.match(t).group(1))))
+    unique_ids = set().union(*by_tier.values()) if by_tier else set()
+    stats = SiteStats(
+        by_tier=by_tier,
+        extra_problem_ids=set(),
+        source_files=identified_files,
+        duplicate_files=identified_files - len(unique_ids),
+        unidentified=unidentified,
+    )
+    return tiers, stats
+
+
+def render_stats(
+    all_stats: dict[str, SiteStats],
+    site_tiers: dict[str, tuple[str, tuple[str, ...]]] = SITE_TIERS,
+) -> str:
     sections = [STATS_START, "## Solved Problems"]
-    for site, (label, tiers) in SITE_TIERS.items():
+    for site, (label, tiers) in site_tiers.items():
         sections.extend(("", render_table(site, label, tiers, all_stats[site])))
     sections.extend(("", STATS_END))
     return "\n".join(sections)
@@ -193,9 +243,12 @@ def update_readme(block: str) -> None:
         temporary.replace(README_PATH)
 
 
-def print_verification(all_stats: dict[str, SiteStats]) -> None:
+def print_verification(
+    all_stats: dict[str, SiteStats],
+    site_tiers: dict[str, tuple[str, tuple[str, ...]]] = SITE_TIERS,
+) -> None:
     all_unidentified: list[Path] = []
-    for site, (_, tiers) in SITE_TIERS.items():
+    for site, (_, tiers) in site_tiers.items():
         stats = all_stats[site]
         tier_summary = ", ".join(f"{tier}={len(stats.by_tier[tier])}" for tier in tiers)
         print(f"[{site}] Total={len(stats.problem_ids)} | {tier_summary}")
@@ -214,12 +267,17 @@ def main() -> int:
     )
     args = parser.parse_args()
     indexed_paths = staged_paths() if args.staged else None
-    all_stats = {
-        site: collect_site(site, tiers, indexed_paths)
-        for site, (_, tiers) in SITE_TIERS.items()
-    }
-    update_readme(render_stats(all_stats))
-    print_verification(all_stats)
+    codetree_tiers, codetree_stats = collect_codetree(indexed_paths)
+    site_tiers: dict[str, tuple[str, tuple[str, ...]]] = {}
+    all_stats: dict[str, SiteStats] = {}
+    for site, (label, tiers) in SITE_TIERS.items():
+        site_tiers[site] = (label, tiers)
+        all_stats[site] = collect_site(site, tiers, indexed_paths)
+        if site == CODETREE_AFTER:
+            site_tiers[CODETREE] = ("Trail", codetree_tiers)
+            all_stats[CODETREE] = codetree_stats
+    update_readme(render_stats(all_stats, site_tiers))
+    print_verification(all_stats, site_tiers)
     return 0
 
 

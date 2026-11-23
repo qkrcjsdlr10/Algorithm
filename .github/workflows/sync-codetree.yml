@@ -33,9 +33,14 @@ jobs:
           mkdir -p CodeTree
           rsync -a --exclude='.git/' _codetree_source/ CodeTree/
 
+      # Commits pushed with GITHUB_TOKEN do not trigger update-stats.yml,
+      # so recalculate README counts here and ship them in the same commit.
+      - name: Update README statistics
+        run: python3 scripts/update_stats.py
+
       - name: Commit synced solutions
         run: |
-          git add CodeTree
+          git add CodeTree README.md
           if git diff --cached --quiet; then
             echo "CodeTree solutions are already up to date."
             exit 0

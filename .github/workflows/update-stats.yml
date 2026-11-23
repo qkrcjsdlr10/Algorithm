@@ -9,6 +9,7 @@ on:
       - "Programmers/**"
       - "SWEA/**"
       - "LeetCode/**"
+      - "CodeTree/**"
       - "scripts/update_stats.py"
       - ".github/workflows/update-stats.yml"
   workflow_dispatch:
