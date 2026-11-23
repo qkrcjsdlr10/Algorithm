@@ -10,7 +10,7 @@ permissions:
 
 concurrency:
   group: sync-codetree-solutions
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   sync:
@@ -44,4 +44,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "sync: update CodeTree solutions"
-          git push
+          git pull --rebase origin main
+          git push origin HEAD:main

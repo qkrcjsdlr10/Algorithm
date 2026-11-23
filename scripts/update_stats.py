@@ -50,6 +50,15 @@ SITE_TIERS: dict[str, tuple[str, tuple[str, ...]]] = {
     "Programmers": ("Level", ("Lv0", "Lv1", "Lv2", "Lv3", "Lv4", "Lv5")),
     "SWEA": ("Difficulty", ("D1", "D2", "D3", "D4", "D5", "D6")),
     "LeetCode": ("Difficulty", ("Easy", "Medium", "Hard")),
+    # SQL solutions live in their own folders and get separate tables,
+    # so they never change the algorithm counts above.
+    "Programmers/SQL": ("Level", ("Lv1", "Lv2", "Lv3", "Lv4", "Lv5")),
+    "LeetCode/SQL": ("Difficulty", ("Easy", "Medium", "Hard")),
+}
+
+SITE_TITLES: dict[str, str] = {
+    "Programmers/SQL": "Programmers SQL",
+    "LeetCode/SQL": "LeetCode SQL",
 }
 
 EXTRA_TOTAL_FOLDERS: dict[str, tuple[str, ...]] = {
@@ -142,7 +151,7 @@ def collect_site(
 
 def render_table(site: str, label: str, tiers: tuple[str, ...], stats: SiteStats) -> str:
     lines = [
-        f"### {site}",
+        f"### {SITE_TITLES.get(site, site)}",
         "",
         f"| {label} | Problems |",
         "|---|---:|",

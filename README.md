@@ -57,18 +57,39 @@
 | Hard | 0 |
 | **Total** | **13** |
 
+### Programmers SQL
+
+| Level | Problems |
+|---|---:|
+| Lv1 | 0 |
+| Lv2 | 0 |
+| Lv3 | 0 |
+| Lv4 | 0 |
+| Lv5 | 0 |
+| **Total** | **0** |
+
+### LeetCode SQL
+
+| Difficulty | Problems |
+|---|---:|
+| Easy | 0 |
+| Medium | 0 |
+| Hard | 0 |
+| **Total** | **0** |
+
 <!-- STATS_END -->
 
 ## 문제 수 자동 갱신
 
-처음 클론한 저장소에서는 `git config core.hooksPath .githooks`를 한 번 실행합니다.
+처음 클론한 저장소(또는 훅이 꺼진 PC)에서는 `git config core.hooksPath .githooks`를 한 번 실행합니다.
 이후 커밋할 때 Git에 추가한 풀이 파일을 기준으로 위 표를 다시 계산하고 README를 같은 커밋에 포함합니다.
 `main`에 푸시하면 GitHub Actions도 다시 계산하여 누락된 갱신을 보완합니다.
 
 ## Languages
 
+- C++
 - Java
-- Python (필요한 경우)
+- C (일부)
 
 ## Organization
 
@@ -85,7 +106,9 @@ Algorithm/
 │  ├─ Lv1/
 │  ├─ Lv2/
 │  ├─ Lv3/
-│  └─ Lv4/
+│  ├─ Lv4/
+│  └─ SQL/
+│     ├─ Lv1/ … Lv5/
 ├─ SWEA/
 │  ├─ D2/
 │  ├─ D3/
@@ -96,10 +119,15 @@ Algorithm/
 └─ LeetCode/
    ├─ Easy/
    ├─ Medium/
-   └─ Hard/
+   ├─ Hard/
+   └─ SQL/
+      ├─ Easy/
+      ├─ Medium/
+      └─ Hard/
 ```
 
 Git은 빈 폴더를 추적하지 않으므로, 난이도 폴더는 첫 문제 풀이를 추가할 때 저장소에 반영됩니다.
+SQL 폴더는 미리 `.gitkeep`으로 만들어 두었으며, SQL 풀이는 알고리즘 문제 수와 별도의 표로 집계합니다.
 
 ## File Naming
 
@@ -111,6 +139,8 @@ BOJ/Gold/1753_최단경로.java
 Programmers/Lv2/전력망을_둘로_나누기.java
 SWEA/D4/5644_무선충전.java
 LeetCode/Medium/3_Longest_Substring_Without_Repeating_Characters.java
+Programmers/SQL/Lv1/59034_모든_레코드_조회하기.sql
+LeetCode/SQL/Easy/175_Combine_Two_Tables.sql
 ```
 
 ## Principles

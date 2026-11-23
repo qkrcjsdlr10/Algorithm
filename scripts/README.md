@@ -5,9 +5,9 @@
 ## Setup
 
 ```powershell
-python -m venv C:\Algorithm\.venv
-C:\Algorithm\.venv\Scripts\python.exe -m pip install -r C:\Algorithm\scripts\requirements.txt
-C:\Algorithm\.venv\Scripts\python.exe -m playwright install chromium
+python -m venv C:\SSAFY\Algorithm\.venv
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe -m pip install -r C:\SSAFY\Algorithm\scripts\requirements.txt
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe -m playwright install chromium
 ```
 
 번들 Chromium 설치는 일반 Playwright 실행에 필요합니다. 현재 스크립트처럼 설치된 Edge에 CDP로 연결할 때는 생략할 수 있습니다.
@@ -27,10 +27,10 @@ C:\Algorithm\.venv\Scripts\python.exe -m playwright install chromium
 ## Run
 
 ```powershell
-C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\programmers_backup.py --inspect
-C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\programmers_backup.py --test
-C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\programmers_backup.py --limit 10
-C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\programmers_backup.py --all
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe C:\SSAFY\Algorithm\scripts\programmers_backup.py --inspect
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe C:\SSAFY\Algorithm\scripts\programmers_backup.py --test
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe C:\SSAFY\Algorithm\scripts\programmers_backup.py --limit 10
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe C:\SSAFY\Algorithm\scripts\programmers_backup.py --all
 ```
 
 `--inspect`는 파일을 저장하지 않고 현재 DOM의 solved 문제 링크와 브라우저가 실제로 요청한 경로를 확인합니다.
@@ -44,10 +44,10 @@ C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\programmers_backup.py
 별도 Edge 프로필의 로그인 세션에 CDP로 연결해 본인의 SWEA Pass 제출 코드를 백업합니다.
 
 ```powershell
-C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\swea_backup.py --inspect
-C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\swea_backup.py --test
-C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\swea_backup.py --limit 10
-C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\swea_backup.py --all
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe C:\SSAFY\Algorithm\scripts\swea_backup.py --inspect
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe C:\SSAFY\Algorithm\scripts\swea_backup.py --test
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe C:\SSAFY\Algorithm\scripts\swea_backup.py --limit 10
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe C:\SSAFY\Algorithm\scripts\swea_backup.py --all
 ```
 
 `--test`는 아직 로컬에 없는 문제를 최대 3개 처리합니다. 같은 문제를 여러 언어로 통과했다면 언어별 최신 Pass 제출을 각각 저장합니다. 기존 코드가 다르면 덮어쓰지 않고 `UPDATE` 후보로만 보고합니다.
@@ -59,10 +59,10 @@ C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\swea_backup.py --all
 별도 Edge 프로필의 로그인 세션에 연결해 본인의 Accepted 제출 코드를 백업합니다.
 
 ```powershell
-C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\leetcode_backup.py --inspect
-C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\leetcode_backup.py --test
-C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\leetcode_backup.py --limit 3
-C:\Algorithm\.venv\Scripts\python.exe C:\Algorithm\scripts\leetcode_backup.py --all
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe C:\SSAFY\Algorithm\scripts\leetcode_backup.py --inspect
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe C:\SSAFY\Algorithm\scripts\leetcode_backup.py --test
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe C:\SSAFY\Algorithm\scripts\leetcode_backup.py --limit 3
+C:\SSAFY\Algorithm\.venv\Scripts\python.exe C:\SSAFY\Algorithm\scripts\leetcode_backup.py --all
 ```
 
 목록, 제출 이력, 코드 원문은 로그인된 LeetCode 화면에서 실제 확인한 GraphQL 요청을 동일 브라우저 세션으로 순차 조회합니다. `--test`는 로컬에 아직 없는 문제를 최대 3개 처리하고, 같은 문제의 여러 Accepted 언어는 각각 저장합니다. 기존 코드가 다르고 최신 여부를 확정할 metadata가 없으면 덮어쓰지 않고 `UPDATE-CANDIDATE`로 보고합니다.
