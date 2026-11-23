@@ -74,8 +74,8 @@
 |---|---:|
 | Easy | 0 |
 | Medium | 0 |
-| Hard | 0 |
-| **Total** | **0** |
+| Hard | 1 |
+| **Total** | **1** |
 
 <!-- STATS_END -->
 
