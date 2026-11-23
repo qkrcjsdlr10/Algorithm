@@ -1,0 +1,4 @@
+-r ../scripts/requirements.txt
+httpx>=0.27,<1
+watchdog>=4,<7
+pytest>=8,<10

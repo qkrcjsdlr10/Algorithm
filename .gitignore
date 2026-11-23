@@ -54,3 +54,10 @@ desktop.ini
 
 # Local learning material downloads
 /downloads/
+
+# ALGO auto-sync local state (SQLite DB, logs, locks, site-code candidates, backups)
+.algo/
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+algo-index

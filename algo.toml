@@ -1,0 +1,46 @@
+# ALGO 자동 동기화 설정. 비밀 정보(쿠키·토큰·비밀번호)는 절대 여기에 쓰지 마세요.
+# PC별로 바꾸고 싶은 값은 .algo/algo.local.toml 에 같은 형식으로 적으면 덮어씁니다 (Git 제외).
+
+[general]
+branch = "main"
+remote = "origin"                                  # 자동 푸시는 이 remote로만 합니다
+expected_remote = "github.com/qkrcjsdlr10/Algorithm" # remote 주소가 다르면 푸시하지 않습니다
+scan_interval_seconds = 15                         # 파일 변경 확인 주기 (watchdog이 있으면 즉시)
+extra_watch_dirs = []                              # 저장소 밖 작업 폴더 (예: ["C:/SSAFY/workspace"])
+
+[publish]
+mode = "batch"          # immediate | batch | commit_only | manual
+batch_minutes = 3       # batch: 첫 정답 확인 후 이 시간 동안 모아서 한 번에 커밋·푸시
+auto_fast_forward = true # 클라우드(LeetCode) 커밋을 안전할 때만 자동으로 받아옴
+
+[duplicates]
+policy = "ask"          # keep | add_as_new | ask | ignore  (ask: 기존 파일 유지 + 사이트 코드 후보 저장)
+
+[browser]
+cdp_url = "http://127.0.0.1:9222"  # 127.0.0.1/localhost만 허용
+edge_path = ""                     # 비우면 자동 탐색
+profile_dir = ""                   # 비우면 %LOCALAPPDATA%\algo-sync\edge-profile (저장소 밖)
+
+[sites.leetcode]
+mode = "cloud"          # cloud: GitHub Actions(sync-leetcode.yml) / local: Edge 전용 프로필 / off
+interval_minutes = 10   # local 모드일 때만 사용
+max_problems_per_run = 20
+delay_seconds = 1.0
+
+[sites.programmers]
+mode = "local"
+interval_minutes = 20
+max_problems_per_run = 10
+delay_seconds = 1.0
+
+[sites.swea]
+mode = "local"
+interval_minutes = 60
+max_problems_per_run = 5
+delay_seconds = 1.5
+
+[sites.boj]
+mode = "manual"         # 자동 조회 없음: algo approve로 직접 승인
+interval_minutes = 10
+max_problems_per_run = 0
+delay_seconds = 2.0

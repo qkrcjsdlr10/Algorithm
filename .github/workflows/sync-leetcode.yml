@@ -1,0 +1,61 @@
+name: Sync LeetCode solutions
+
+# Collects new Accepted LeetCode submissions without the local PC.
+# Requires repository secrets LEETCODE_SESSION and LEETCODE_CSRFTOKEN (your own
+# browser cookies). Without them the job only prints a notice and exits.
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-leetcode-solutions
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Algorithm
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        # Only the Python package is needed (no browser download): the backup
+        # script's queries are reused over plain HTTPS.
+        run: python -m pip install --disable-pip-version-check "playwright>=1.40,<2" "httpx>=0.27,<1"
+
+      - name: Fetch new accepted LeetCode submissions
+        env:
+          LEETCODE_SESSION: ${{ secrets.LEETCODE_SESSION }}
+          LEETCODE_CSRFTOKEN: ${{ secrets.LEETCODE_CSRFTOKEN }}
+        run: python tools/algo_cli.py cloud-sync leetcode
+
+      # Commits pushed with GITHUB_TOKEN do not trigger update-stats.yml,
+      # so recalculate README counts here and ship them in the same commit.
+      - name: Update README statistics
+        run: python scripts/update_stats.py
+
+      - name: Commit synced solutions
+        run: |
+          git add LeetCode README.md
+          if git diff --cached --quiet; then
+            echo "No new LeetCode solutions."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "sync: update LeetCode solutions" -m "Algo-Sync: auto"
+          git pull --rebase origin main
+          git push origin HEAD:main
