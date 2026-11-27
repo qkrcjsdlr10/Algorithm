@@ -20,9 +20,9 @@
 |---|---:|
 | Bronze | 14 |
 | Silver | 66 |
-| Gold | 10 |
+| Gold | 11 |
 | Platinum | 0 |
-| **Total** | **90** |
+| **Total** | **91** |
 
 ### Programmers
 
